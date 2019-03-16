@@ -38,14 +38,20 @@ namespace TradeNews
             services.AddDbContext<TradeNewsDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<User>()
-                .AddEntityFrameworkStores<TradeNewsDbContext>();
+            services.AddIdentity<User, Role>(options => options.Stores.MaxLengthForKeys = 128)
+                .AddEntityFrameworkStores<TradeNewsDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
+            TradeNewsDbContext context,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -70,6 +76,7 @@ namespace TradeNews
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            UserRoleSeeding.Initialize(context, userManager, roleManager).Wait();
         }
     }
 }

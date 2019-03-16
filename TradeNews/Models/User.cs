@@ -8,7 +8,8 @@ namespace TradeNews.Models
 {
     public class User : IdentityUser
     {
-        public User()
+
+        public User() : base()
         {
             this.CreatedAt = DateTime.Now;
             this.UpdatedAt = DateTime.Now;
