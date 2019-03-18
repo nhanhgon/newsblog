@@ -19,11 +19,11 @@ namespace TradeNews.Models
         public string FullName { get; set; }
         public string Address { get; set; }
         public Gender Gender { get; set; }
-        public string Phone { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public UserStatus Status { get; set; }
+        public ICollection<Blog> Blogs { get; set; }
     }
 
     public enum UserStatus
